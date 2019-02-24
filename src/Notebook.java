@@ -1,32 +1,32 @@
 
 public class Notebook {
 
-    private int numberOfNotes = 10;
+    private int notebookCapacity = 8;
     private int currentNote = -1;
     private Note[] notes;
     private static final int MAGNIFIER = 2;
 
 
     public Notebook() {
-        notes = new Note[numberOfNotes];
+        notes = new Note[notebookCapacity];
     }
 
     public Notebook(int numberOfNotes) {
-        this.numberOfNotes = numberOfNotes;
+        this.notebookCapacity = numberOfNotes;
         notes = new Note[numberOfNotes];
     }
 
 
     public void addNote(String date, String information) {
         currentNote++;
-        if (currentNote < numberOfNotes) {
+        if (currentNote < notebookCapacity) {
             notes[currentNote] = new Note(currentNote, date, information);
         } else {
-            int newNumberOfNotes = MAGNIFIER * numberOfNotes;
-            notes = changeNotebookSize(numberOfNotes, newNumberOfNotes);
+            int newNotebookCapacity = MAGNIFIER * notebookCapacity;
+            notes = changeNotebookSize(notebookCapacity, newNotebookCapacity);
             Note note = new Note(currentNote, date, information);
             notes[currentNote] = note;
-            numberOfNotes = newNumberOfNotes;
+            notebookCapacity = newNotebookCapacity;
         }
     }
 
@@ -34,21 +34,16 @@ public class Notebook {
         if (numToDelete > currentNote || numToDelete < 0) {
             System.out.println("There is no note with this number!!!");
         } else {
-            int length = numberOfNotes - numToDelete - 1;
-            Note[] newNotes = new Note[length];
-            System.arraycopy(notes, numToDelete + 1, newNotes, 0, length);
-            System.arraycopy(newNotes, 0, notes, numToDelete, length);
-            for (int i = 0; i < numberOfNotes; i++) {
-                if (notes[i] != null) {
-                    currentNote = i;
-                    notes[i].setNumOfNote(i);
-                }
+            System.arraycopy(notes, numToDelete + 1, notes, numToDelete, notebookCapacity - numToDelete - 1);
+            notes[currentNote]=null;
+            currentNote--;
+            for (int i = 0; i < currentNote + 1; i++) {
+                notes[i].setNumOfNote(i);
             }
-            int newNumberOfNotes = numberOfNotes - currentNote;
-            notes = changeNotebookSize(numberOfNotes, newNumberOfNotes);
-            numberOfNotes = newNumberOfNotes;
-
-
+            int newNotebookCapacity = currentNote+3;
+            notes = changeNotebookSize(notebookCapacity, newNotebookCapacity);
+            notebookCapacity = newNotebookCapacity;
+            System.out.println(numToDelete);
         }
     }
 
@@ -71,7 +66,7 @@ public class Notebook {
 
     public void printAllNotes() {
         int i = 0;
-        while (notes[i] != null) {
+        while (i <= currentNote) {
             System.out.println(notes[i].toString());
             i++;
         }
@@ -84,7 +79,7 @@ public class Notebook {
         if (oldSize < newSize) {
             System.arraycopy(newNotes, 0, notes, 0, newNotes.length);
         } else {
-            System.arraycopy(newNotes, 0, notes, 0, newNotes.length - 1);
+            System.arraycopy(newNotes, 0, notes, 0, newSize);
         }
         return notes;
     }
