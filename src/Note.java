@@ -3,7 +3,7 @@ public class Note {
     private String information;
     private int numOfNote;
 
-    Note(int numOfNote, String date, String information) {
+    public Note(int numOfNote, String date, String information) {
         this.numOfNote = numOfNote;
         this.date = date;
         this.information = information;
@@ -13,9 +13,11 @@ public class Note {
     public int getNumOfNote() {
         return numOfNote;
     }
-    public String  getDate() {
+
+    public String getDate() {
         return date;
     }
+
     public String getInformation() {
         return information;
     }
@@ -35,7 +37,7 @@ public class Note {
 
     @Override
     public String toString() {
-        return (numOfNote + ": <" + date + "> " + information);
+        return (String.format("%d: <%s> %s", numOfNote, date, information));
     }
 
 }

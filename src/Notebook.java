@@ -1,37 +1,30 @@
 
 public class Notebook {
 
-    private int numberOfNotes = 2;
+    private int numberOfNotes = 10;
     private int currentNote = -1;
-    private String date = "";
-    private String information = "";
-    private Note[] notes = new Note[numberOfNotes];
-    private Note note = new Note(currentNote, date, information);
+    private Note[] notes;
+    private static final int MAGNIFIER = 2;
 
-    Notebook() {
+
+    public Notebook() {
+        notes = new Note[numberOfNotes];
     }
 
-    private static Note[] changeNotebookSize(Note[] notes, int oldSize, int newSize) {
-        Note[] newNotes = notes.clone();
-        notes = new Note[newSize];
-        if (oldSize < newSize) {
-            System.arraycopy(newNotes, 0, notes, 0, newNotes.length);
-        } else {
-            System.arraycopy(newNotes, 0, notes, 0, newNotes.length - 1);
-        }
-        return notes;
+    public Notebook(int numberOfNotes) {
+        this.numberOfNotes = numberOfNotes;
+        notes = new Note[numberOfNotes];
     }
 
 
     public void addNote(String date, String information) {
         currentNote++;
         if (currentNote < numberOfNotes) {
-            note = new Note(currentNote, date, information);
-            notes[currentNote] = note;
+            notes[currentNote] = new Note(currentNote, date, information);
         } else {
-            int newNumberOfNotes = 2 * numberOfNotes;
-            notes = changeNotebookSize(notes, numberOfNotes, newNumberOfNotes);
-            note = new Note(currentNote, date, information);
+            int newNumberOfNotes = MAGNIFIER * numberOfNotes;
+            notes = changeNotebookSize(numberOfNotes, newNumberOfNotes);
+            Note note = new Note(currentNote, date, information);
             notes[currentNote] = note;
             numberOfNotes = newNumberOfNotes;
         }
@@ -41,18 +34,18 @@ public class Notebook {
         if (numToDelete > currentNote || numToDelete < 0) {
             System.out.println("There is no note with this number!!!");
         } else {
-
-            for (int i = numToDelete; i < numberOfNotes - 1; i++) {
-                if (notes[i + 1] == null) {
-                    break;
-                } else {
-                    notes[i] = notes[i + 1];
+            int length = numberOfNotes - numToDelete - 1;
+            Note[] newNotes = new Note[length];
+            System.arraycopy(notes, numToDelete + 1, newNotes, 0, length);
+            System.arraycopy(newNotes, 0, notes, numToDelete, length);
+            for (int i = 0; i < numberOfNotes; i++) {
+                if (notes[i] != null) {
                     currentNote = i;
-                    notes[i].setNumOfNote(currentNote);
+                    notes[i].setNumOfNote(i);
                 }
             }
-            int newNumberOfNotes = numberOfNotes--;
-            notes = changeNotebookSize(notes, numberOfNotes, newNumberOfNotes);
+            int newNumberOfNotes = numberOfNotes - currentNote;
+            notes = changeNotebookSize(numberOfNotes, newNumberOfNotes);
             numberOfNotes = newNumberOfNotes;
 
 
@@ -77,8 +70,23 @@ public class Notebook {
     }
 
     public void printAllNotes() {
-        for (int i = 0; i < currentNote + 1; i++) {
-            System.out.println(notes[i].getNumOfNote() + ": <" + notes[i].getDate() + "> " + notes[i].getInformation());
+        int i = 0;
+        while (notes[i] != null) {
+            System.out.println(notes[i].toString());
+            i++;
         }
+
     }
+
+    private Note[] changeNotebookSize(int oldSize, int newSize) {
+        Note[] newNotes = notes.clone();
+        notes = new Note[newSize];
+        if (oldSize < newSize) {
+            System.arraycopy(newNotes, 0, notes, 0, newNotes.length);
+        } else {
+            System.arraycopy(newNotes, 0, notes, 0, newNotes.length - 1);
+        }
+        return notes;
+    }
+
 }

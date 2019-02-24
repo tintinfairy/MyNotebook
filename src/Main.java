@@ -1,7 +1,7 @@
 public class Main {
 
     public static void main(String[] args) {
-        Notebook notebook = new Notebook();
+        Notebook notebook = new Notebook(5);
         String date = "12.03.1978";
         String information = "I had a great day in Berlin!";
 
@@ -25,11 +25,14 @@ public class Main {
         System.out.println("printing all notes");
         notebook.printAllNotes();
 
+        System.out.println("deleting one chosen by number note, but element doesn't exist!!!");
+        notebook.deleteNote(2);
+
         System.out.println("printing one chosen by number note");
         System.out.println(notebook.getNote(1));
 
         System.out.println("editing one chosen by number note");
-        notebook.editNote(1,"12.03.1978","I had a great day in Berlin!");
+        notebook.editNote(1, "12.03.1978", "I had a great day in Berlin!");
 
         System.out.println("printing all notes");
         notebook.printAllNotes();
