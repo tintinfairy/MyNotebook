@@ -4,16 +4,19 @@ public class Notebook {
     private int notebookCapacity = 8;
     private int currentNote = -1;
     private Note[] notes;
-    private static final int MAGNIFIER = 2;
-
+    private static final int SIZE_CHANGER = 4;
 
     public Notebook() {
         notes = new Note[notebookCapacity];
     }
 
-    public Notebook(int numberOfNotes) {
-        this.notebookCapacity = numberOfNotes;
-        notes = new Note[numberOfNotes];
+    public Notebook(int notebookCapacity) {
+        if (notebookCapacity > 0) {
+            this.notebookCapacity = notebookCapacity;
+            notes = new Note[notebookCapacity];
+        } else {
+            System.out.println("The number is too short to be a capacity!!!");
+        }
     }
 
 
@@ -22,11 +25,12 @@ public class Notebook {
         if (currentNote < notebookCapacity) {
             notes[currentNote] = new Note(currentNote, date, information);
         } else {
-            int newNotebookCapacity = MAGNIFIER * notebookCapacity;
+            int newNotebookCapacity = SIZE_CHANGER + notebookCapacity;
             notes = changeNotebookSize(notebookCapacity, newNotebookCapacity);
             Note note = new Note(currentNote, date, information);
             notes[currentNote] = note;
             notebookCapacity = newNotebookCapacity;
+
         }
     }
 
@@ -35,12 +39,12 @@ public class Notebook {
             System.out.println("There is no note with this number!!!");
         } else {
             System.arraycopy(notes, numToDelete + 1, notes, numToDelete, notebookCapacity - numToDelete - 1);
-            notes[currentNote]=null;
+            notes[currentNote] = null;
             currentNote--;
             for (int i = 0; i < currentNote + 1; i++) {
                 notes[i].setNumOfNote(i);
             }
-            int newNotebookCapacity = currentNote+3;
+            int newNotebookCapacity = currentNote + SIZE_CHANGER;
             notes = changeNotebookSize(notebookCapacity, newNotebookCapacity);
             notebookCapacity = newNotebookCapacity;
             System.out.println(numToDelete);
@@ -65,9 +69,8 @@ public class Notebook {
     }
 
     public void printAllNotes() {
-        int i = 0;
-        while (i <= currentNote) {
-            System.out.println(notes[i].toString());
+        for (int i = 0; i <= currentNote; i++) {
+            System.out.println(notes[i]);
             i++;
         }
 
