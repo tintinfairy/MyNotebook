@@ -5,7 +5,7 @@ public class Main {
         String date = "12.03.1978";
         String information = "I had a great day in Berlin!";
 
-       /* String date1 = "14.03.1978";
+        /*String date1 = "14.03.1978";
         String information1 = "All day in Rome. Awesome";
 
         String date2 = "18.03.1978";

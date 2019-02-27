@@ -4,7 +4,7 @@ public class Notebook {
     private int notebookCapacity = 8;
     private int currentNote = -1;
     private Note[] notes;
-    private static final int SIZE_CHANGER = 4;
+    private static final int SIZE_CHANGER = 2;
 
     public Notebook() {
         notes = new Note[notebookCapacity];
@@ -25,7 +25,7 @@ public class Notebook {
         if (currentNote < notebookCapacity) {
             notes[currentNote] = new Note(currentNote, date, information);
         } else {
-            int newNotebookCapacity = SIZE_CHANGER + notebookCapacity;
+            int newNotebookCapacity = SIZE_CHANGER * notebookCapacity;
             notes = changeNotebookSize(notebookCapacity, newNotebookCapacity);
             Note note = new Note(currentNote, date, information);
             notes[currentNote] = note;
@@ -44,9 +44,11 @@ public class Notebook {
             for (int i = 0; i < currentNote + 1; i++) {
                 notes[i].setNumOfNote(i);
             }
-            int newNotebookCapacity = currentNote + SIZE_CHANGER;
-            notes = changeNotebookSize(notebookCapacity, newNotebookCapacity);
-            notebookCapacity = newNotebookCapacity;
+            if (currentNote < notebookCapacity / SIZE_CHANGER) {
+                int newNotebookCapacity = notebookCapacity / SIZE_CHANGER;
+                notes = changeNotebookSize(notebookCapacity, newNotebookCapacity);
+                notebookCapacity = newNotebookCapacity;
+            }
             System.out.println(numToDelete);
         }
     }
@@ -71,7 +73,6 @@ public class Notebook {
     public void printAllNotes() {
         for (int i = 0; i <= currentNote; i++) {
             System.out.println(notes[i]);
-            i++;
         }
 
     }
